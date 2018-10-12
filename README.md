@@ -98,3 +98,14 @@
  
 ##### add following line in your /etc/hosts file
     127.0.0.1    blog.com
+
+## npm and bootstrap
+
+    $ composer require webpack-encore
+    $ sudo apt-get install cmdtest
+    $ sudo apt-get install npm
+    $ sudo npm install --global yarn
+    $ sudo yarn add sass-loader node-sass --dev
+    $ sudo yarn run encore dev --watch
+    $ sudo yarn add jquery --dev
+    $ sudo yarn add bootstrap-sass --dev
