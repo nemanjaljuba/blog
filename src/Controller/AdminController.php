@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\BlogPost;
+use App\Form\EntryFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Author;
 use App\Form\AuthorFormType;
 
+/**
+ * @Route("/admin")
+ */
 class AdminController extends AbstractController
 {
 
@@ -32,7 +37,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/author/create", name="author_create")
+     * @Route("/author/create", name="author_create")
      */
     public function createAuthorAction(Request $request)
     {
@@ -62,5 +67,84 @@ class AdminController extends AbstractController
         return $this->render('admin/create_author.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/create-entry", name="admin_create_entry")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createEntryAction(Request $request)
+    {
+        $blogPost = new BlogPost();
+
+        $author = $this->authorRepository->findOneByUsername($this->getUser()->getUserName());
+        $blogPost->setAuthor($author);
+
+        $form = $this->createForm(EntryFormType::class, $blogPost);
+        $form->handleRequest($request);
+
+        // Check is valid
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($blogPost);
+            $this->entityManager->flush($blogPost);
+
+            $this->addFlash('success', 'Congratulations! Your post is created');
+
+            return $this->redirectToRoute('admin_entries');
+        }
+
+        return $this->render('admin/entry_form.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/", name="admin_index")
+     * @Route("/entries", name="admin_entries")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function entriesAction()
+    {
+        $author = $this->authorRepository->findOneByUsername($this->getUser()->getUserName());
+
+        $blogPosts = [];
+
+        if ($author) {
+            $blogPosts = $this->blogPostRepository->findByAuthor($author);
+        }
+
+        return $this->render('admin/entries.html.twig', [
+            'blogPosts' => $blogPosts
+        ]);
+    }
+
+    /**
+     * @Route("/delete-entry/{entryId}", name="admin_delete_entry")
+     *
+     * @param $entryId
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteEntryAction($entryId)
+    {
+        $blogPost = $this->blogPostRepository->findOneById($entryId);
+        $author = $this->authorRepository->findOneByUsername($this->getUser()->getUserName());
+
+        if (!$blogPost || $author !== $blogPost->getAuthor()) {
+            $this->addFlash('error', 'Unable to remove entry!');
+
+            return $this->redirectToRoute('admin_entries');
+        }
+
+        $this->entityManager->remove($blogPost);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Entry was deleted!');
+
+        return $this->redirectToRoute('admin_entries');
     }
 }
