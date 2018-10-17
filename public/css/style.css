@@ -5,6 +5,17 @@
 body {
     font-family: Georgia, "Times New Roman", Times, serif;
     color: #555;
+    background-color: #fffb88;
+}
+
+footer {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    background-color: #ff0c1c;
+}
+
+nav {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    background-color: #2f43ff;
 }
 
 h1, .h1,
