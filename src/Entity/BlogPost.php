@@ -44,8 +44,6 @@ class BlogPost
      */
     protected $slug;
 
-
-
     /**
      * @var string
      *
@@ -61,12 +59,15 @@ class BlogPost
     private $body;
 
     /**
-     * @var Author
+     * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Author")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", onDelete="CASCADE")
+     *
+     * @Expose
      */
-    private $author;
+    protected $author;
+
 
     /**
      * @var \DateTime
@@ -115,6 +116,20 @@ class BlogPost
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return BlogPost
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -178,11 +193,11 @@ class BlogPost
     /**
      * Set author
      *
-     * @param Author $author
+     * @param User $author
      *
-     * @return BlogPost
+     * @return $this
      */
-    public function setAuthor(Author $author)
+    public function setAuthor($author)
     {
         $this->author = $author;
 
@@ -192,12 +207,13 @@ class BlogPost
     /**
      * Get author
      *
-     * @return Author
+     * @return User
      */
     public function getAuthor()
     {
         return $this->author;
     }
+
 
     /**
      * Set createdAt

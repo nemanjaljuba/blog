@@ -21,6 +21,8 @@ class BlogPostAdmin extends AbstractAdmin
         $formMapper->add('title', TextType::class);
         $formMapper->add('body');
         $formMapper->add('description');
+        $formMapper->add('author');
+        $formMapper->add('slug');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

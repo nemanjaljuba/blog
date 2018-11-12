@@ -12,11 +12,8 @@
         <div class="row">
             <div class="col-sm-8 blog-main">
                 <div class="blog-post">
-                    <h2 class="blog-post-title">{{ author.name|raw }}</h2>
+                    <h2 class="blog-post-title">{{ author.firstname|raw }}</h2>
 
-                    <p>Title: {{ author.title|raw }}</p>
-                    <p>Company: {{ author.company|raw }}</p>
-                    <p>Short Biography: {{ author.shortBio|raw }}</p>
                     <ul>
                         {% if author.getPhone %}
                             <li>{{ author.phone }}</li>
@@ -27,9 +24,7 @@
                         {% if author.getTwitter %}
                             <li>{{ author.twitter }}</li>
                         {% endif %}
-                        {% if author.getGithub %}
-                            <li>{{ author.github }}</li>
-                        {% endif %}
+
                     </ul>
 
                 </div>

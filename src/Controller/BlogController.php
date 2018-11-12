@@ -28,18 +28,8 @@ class BlogController extends AbstractController
     {
         $this->entityManager = $entityManager;
         $this->blogPostRepository = $entityManager->getRepository('App:BlogPost');
-        $this->authorRepository = $entityManager->getRepository('App:Author');
+        $this->authorRepository = $entityManager->getRepository('App:User');
     }
-
-//    /**
-//     * @Route("/", name="homepage")
-//     */
-//    public function indexAction()
-//    {
-//        return $this->render('blog/index.html.twig', [
-//            'controller_name' => 'BlogController',
-//        ]);
-//    }
 
     /**
      * @Route("/", name="homepage")
