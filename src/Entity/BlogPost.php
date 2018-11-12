@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * BlogPost
@@ -32,9 +37,14 @@ class BlogPost
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"title"}, updatable=false)
+     * @ORM\Column(length=128, unique=true, nullable=true)
+     *
+     * @Expose
      */
-    private $slug;
+    protected $slug;
+
+
 
     /**
      * @var string
@@ -105,20 +115,6 @@ class BlogPost
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     *
-     * @return BlogPost
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     /**

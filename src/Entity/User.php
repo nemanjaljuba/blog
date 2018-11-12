@@ -619,7 +619,7 @@ class User extends BaseUser
      * @return string
      */
     public function __toString() {
-        return $this->username;
+        return $this->firstName . " " . $this->lastName;
     }
 
     /**
